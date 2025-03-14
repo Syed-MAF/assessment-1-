@@ -39,10 +39,12 @@ namespace DungeonExplorer
 
                 // Code your playing logic here
                 Console.WriteLine("\nPlease select one of the following numbers to select that option: " +
-                    "\n1. open treasure chest" +
-                    "\n2. open a mysterious box" +
-                    "\n3. go to the second room" +
-                    "\n4. quit game\n");
+                    "\n1. Open treasure chest" +
+                    "\n2. Open a mysterious box" +
+                    "\n3. Go to the second room" +
+                    "\n4. View inventory" +
+                    "\n5. View room description" +
+                    "\n5. Quit game\n");
 
                 string answer = Console.ReadLine();
 
@@ -79,6 +81,22 @@ namespace DungeonExplorer
                         break;
 
                     case "4":
+                        if (player.InventoryContents() == "")
+                        {
+                            Console.WriteLine("\nYour inventory is empty." +
+                                "\nOpen the mysterious box or the chest to collect an item.");
+                        }
+                        else
+                            Console.WriteLine("\nYour inventory contains: " + player.InventoryContents());
+
+                        break;
+
+                    case "5":
+                        Console.WriteLine("\nHere is the room description: ");
+                        Console.WriteLine(currentRoom.GetDescription());
+                        break;
+
+                    case "6":
                         Console.WriteLine("\nSee you next time - Goodbye");
                         playing = false;
                         break;
