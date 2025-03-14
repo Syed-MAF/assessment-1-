@@ -12,10 +12,12 @@ namespace DungeonExplorer
 
         public Game()
         {
-            // Initialize the game with one room and one player
+            // Initialize the game with two rooms and one player
 
-       
+            // gets the user to input their name
             Console.WriteLine("Enter your name to get started: ");
+
+            // checks if the user has entered a name
             while (true)
             {
                 string playerName = Console.ReadLine();
@@ -29,8 +31,10 @@ namespace DungeonExplorer
             Console.WriteLine("\nPress any key to start the game...");
 
 
-
+            // creates a new player object with the name the user has entered
             player = new Player(Console.ReadLine(), 100);
+
+            // creates a new room object with the description of the room
             currentRoom = new Room("\nYou have entered the dungeon" +
                 "\nIn the dungeon there is no light and all you have brought with you is a torch" +
                 "\nYou must remain quite whilst in the first room or else the monster will wake up" +
@@ -49,6 +53,7 @@ namespace DungeonExplorer
 
             bool playing = true;
 
+            // The game loop
             while (playing == true)
             {
 
@@ -63,18 +68,22 @@ namespace DungeonExplorer
 
                 string answer = Console.ReadLine();
 
+                // Switch statement to handle the user input
                 switch (answer)
                 {
+                    // Case 1: Open the treasure chest
                     case "1":
                         Console.WriteLine("This chest contains a sword");
                         Console.WriteLine("You have now equiped a sword");
                         player.PickUpItem("sword");
                         break;
 
+                    // Case 2: Open the mysterious box
                     case "2":
                         Console.WriteLine("There is nothing in this mysterious box");
                         break;
 
+                    // Case 3: Go to the second room
                     case "3":
                         Console.WriteLine("You have entered a large room where a monster has woken up" +
                             "\nYou have no choice but to fight the monster");
@@ -95,6 +104,8 @@ namespace DungeonExplorer
                         }
                         break;
 
+                    // Case 4: View inventory
+
                     case "4":
                         if (player.InventoryContents() == "")
                         {
@@ -106,16 +117,21 @@ namespace DungeonExplorer
 
                         break;
 
+                    // Case 5: View room description
+
                     case "5":
                         Console.WriteLine("\nHere is the room description: ");
                         Console.WriteLine(currentRoom.GetDescription());
                         break;
+
+                    // Case 6: Quit game
 
                     case "6":
                         Console.WriteLine("\nSee you next time - Goodbye");
                         playing = false;
                         break;
 
+                    // Default case: If the user enters a number that is not one of the options or a random string
                     default:
                         Console.WriteLine("\nPlease enter a number for one of the options");
                         break;
