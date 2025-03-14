@@ -26,7 +26,7 @@ namespace DungeonExplorer
             return string.Join(", ", inventory);
         }
 
-        public bool HasIteam(string item)
+        public bool HasItem(string item)
         {
             return inventory.Contains(item);
             //hehehhehe

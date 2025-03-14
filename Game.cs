@@ -63,7 +63,7 @@ namespace DungeonExplorer
                         Console.WriteLine("You have entered a large room where a monster has woken up" +
                             "\nYou have no choice but to fight the monster");
 
-                        if (player.HasIteam("sword"))
+                        if (player.HasItem("sword"))
                         {
                             Console.WriteLine("\nYou have begun the battle with the monster...");
                             Console.WriteLine("\nCongratulations!!! You have beaten the monster and won the game.\n");
