@@ -9,8 +9,7 @@ namespace DungeonExplorer
         private Player player;
         private Room currentRoom;
 
-        //adding changes to check the commit
-        
+
         public Game()
         {
             // Initialize the game with one room and one player
