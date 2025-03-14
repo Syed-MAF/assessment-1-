@@ -13,7 +13,23 @@ namespace DungeonExplorer
         public Game()
         {
             // Initialize the game with one room and one player
+
+       
             Console.WriteLine("Enter your name to get started: ");
+            while (true)
+            {
+                string playerName = Console.ReadLine();
+                if (playerName.Length > 0)
+                {
+                    break;
+                }
+                Console.WriteLine("Please enter a valid name");
+            }
+
+            Console.WriteLine("\nPress any key to start the game...");
+
+
+
             player = new Player(Console.ReadLine(), 100);
             currentRoom = new Room("\nYou have entered the dungeon" +
                 "\nIn the dungeon there is no light and all you have brought with you is a torch" +
@@ -22,7 +38,7 @@ namespace DungeonExplorer
                 "\nThis dungeon is made up of two rooms, the first room contains two items" +
                 "\nThe second room has a monster inside" +
                 "\nTo win the game you must defeat the monster"+
-                "\nThere are a few items scattered around this cold and dark room\n");
+                "\nThere are a few items scattered around this desolated, cold and dark room\n");
             Console.WriteLine(currentRoom.GetDescription());
 
         }
