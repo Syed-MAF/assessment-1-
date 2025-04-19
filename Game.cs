@@ -64,7 +64,7 @@ namespace DungeonExplorer
                     "\n3. Go to the second room" +
                     "\n4. View inventory" +
                     "\n5. View room description" +
-                    "\n5. Quit game\n");
+                    "\n6. Quit game\n");
 
                 string answer = Console.ReadLine();
 
