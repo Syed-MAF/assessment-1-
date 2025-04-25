@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace DungeonExplorer
 {
-    public class Player
+    public class Player : Creature
     {
         // Create a player class with the following properties:
         public string Name { get; private set; }
