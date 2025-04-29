@@ -12,7 +12,7 @@ namespace DungeonExplorer
         private Player player;
         private GameMap gameMap;
         private Monster currentMonster;
-
+        private bool _hasFled;
 
         public Game()
         {
@@ -75,8 +75,8 @@ namespace DungeonExplorer
             while (true)
 
             {
-
-                if (gameMap.CurrentRoom.Monsters.Any())
+                bool _hasFled = false;
+                if (gameMap.CurrentRoom.Monsters.Any() && !_hasFled)
                 {
                     StartCombat();
                 }
@@ -161,6 +161,7 @@ namespace DungeonExplorer
 
                     case "3":
                         Console.WriteLine("You fled the battle!");
+                        _hasFled = true;
                         inCombat = false; 
 
                         break;
@@ -204,7 +205,7 @@ namespace DungeonExplorer
                     int currentIndex = gameMap.Rooms.IndexOf(gameMap.CurrentRoom);
                     if (currentIndex == gameMap.Rooms.Count - 1)
                     {
-                        Console.WriteLine("You win!");
+                        Console.WriteLine("\n Congratulations! You won!");
                         Environment.Exit(0);
                     }
                     else
@@ -220,16 +221,13 @@ namespace DungeonExplorer
                     break;
 
                 case "4":
+                    
                     player.ViewInventory();
-                    Console.WriteLine("Enter the name of the item to use or press enter:");
+                    Console.WriteLine("\nEnter the name of the item to use or type 'cancel':");
                     string itemName = Console.ReadLine();
-                    if (player.HasItem(itemName))
+                    if (itemName.ToLower() != "cancel")
                     {
                         player.UseItem(itemName);
-                    }
-                    else
-                    {
-                        Console.WriteLine("You don't have that item.");
                     }
                     break;
 
