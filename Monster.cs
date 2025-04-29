@@ -18,7 +18,7 @@ namespace DungeonExplorer
 
         public override void Attack(Creature target)
         {
-            Console.WriteLine($"Your attacks do {AttackPower} damage!");
+            Console.WriteLine($"{Name} attacks for {AttackPower} damage!");
             target.TakeDamage(AttackPower);
         }
     }
@@ -30,6 +30,6 @@ namespace DungeonExplorer
 
     public class Dragon : Monster
     {
-        public Dragon() : base("Dragon", 200, 40) { }
+        public Dragon() : base("Dragon", 150, 30) { }
     }
 }

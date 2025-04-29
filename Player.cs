@@ -17,9 +17,7 @@ namespace DungeonExplorer
         public void PickUpItem(Item item)
         {
             inventory.AddItem(item);
-            Console.WriteLine("You've added an item to your inventory\n");
             Console.WriteLine($"You have picked up {item.Name}.");
-            Console.WriteLine("Your one step closer to beating the monsters!");
         }
 
         public bool HasItem(string itemName)
@@ -62,7 +60,7 @@ namespace DungeonExplorer
             Weapon weapon = inventory.GetWeapons().FirstOrDefault();
             if (weapon != null)
             {
-                Console.WriteLine($"You attacked  with {weapon.Name}!" );
+                Console.WriteLine($"{Name} attacked  with {weapon.Name}!" );
 
                 target.TakeDamage(weapon.AttackPower);
             }

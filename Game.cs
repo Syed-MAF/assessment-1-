@@ -1,151 +1,244 @@
 ﻿using System;
 using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 using System.Media;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DungeonExplorer
 {
     internal class Game
     {
         private Player player;
-        private Room currentRoom;
         private GameMap gameMap;
         private Monster currentMonster;
-        
+
 
         public Game()
         {
 
             // gets the user to input their name
+
             Console.WriteLine("Enter your name to get started: ");
+
             string name = Console.ReadLine();
 
+
             // checks if the user has entered a valid name that isn't empty
+
             while (string.IsNullOrWhiteSpace(name))
             {
 
                 Console.WriteLine("Please enter a valid name");
-                Console.WriteLine("Enter a valid name: ");
+                Console.WriteLine("Enter a name: ");
                 name = Console.ReadLine();
-                
+
             }
 
             Console.WriteLine("\nYou are in the dungeon now. " +
                 "\nThere are items scattered around that will help you win the game by defeating the monsters." +
                 "\nGood luck!!!");
-            Console.WriteLine("\nPress any key to start the game...");
 
+            Console.WriteLine("\nStarting room: There is a wooden sword and a health potion.\n");
 
             // creates a new player object with the name the user has entered
             player = new Player(name, 100);
 
             // creates a new room object with the description of the room
-            Room startRoom1 = new Room("\nStarting room: You can see a wooden sword and a health potion.\n");
+            Room startRoom1 = new Room("You are in the starting room.");
 
-            startRoom1.AddItem(new Weapon("Wooden Sword", 10));
+            startRoom1.AddItem(new Weapon("Wooden Sword", 30));
             startRoom1.AddItem(new Potion("Health Potion", 30));
 
 
-            Room goblinRoom = new Room("\nGoblins lair: You can see a goblin blocking your path!.\n");
+            Room goblinRoom = new Room("\n You are in the goblins lair!.\n");
 
             goblinRoom.AddMonster(new Goblin());
 
+            Room dragonRoom = new Room("\nDragons den: The game boss is here!.\n");
 
+            dragonRoom.AddMonster(new Dragon());
 
+            gameMap = new GameMap(startRoom1);
 
+            gameMap.Rooms.Add(goblinRoom);
+            gameMap.Rooms.Add(dragonRoom);
 
         }
+
+
 
         public void Start()
         {
-            // Change the playing logic into true and populate the while loop
-
-            bool playing = true;
 
             // The game loop
-            while (playing == true)
+            while (true)
+
             {
 
-                // Code your playing logic here
-                Console.WriteLine("\nPlease select one of the following numbers to select that option: " +
-                    "\n1. Open treasure chest" +
-                    "\n2. Open a mysterious box" +
-                    "\n3. Go to the second room" +
-                    "\n4. View inventory" +
-                    "\n5. View room description" +
-                    "\n6. Quit game\n");
-
-                string answer = Console.ReadLine();
-
-                // Switch statement to handle the user input
-                switch (answer)
+                if (gameMap.CurrentRoom.Monsters.Any())
                 {
-                    // Case 1: Open the treasure chest
+                    StartCombat();
+                }
+                else
+                {
+                    DisplayRoomOptions();
+                }
+            }
+
+        }
+
+        private void StartCombat()
+        {
+            bool inCombat = true;
+            currentMonster = gameMap.CurrentRoom.Monsters.First();
+
+            Console.WriteLine($"{currentMonster.Name} is attacking you!");
+
+            while (inCombat)
+            {
+                Console.WriteLine("\n Select a number" +
+                    "\n1. Attack" +
+                    "\n2. Use an item" +
+                    "\n3. Flee\n");
+
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
                     case "1":
-                        Console.WriteLine("This chest contains a sword");
-                        Console.WriteLine("You have now equiped a sword");
-                        player.PickUpItem("sword");
-                        break;
 
-                    // Case 2: Open the mysterious box
+                        player.Attack(currentMonster);
+
+                        if (currentMonster.Health <= 0)
+                        {
+                            Console.WriteLine($"You have defeated {currentMonster.Name}");
+
+                            if (currentMonster is Goblin)
+
+                            {
+                                Console.WriteLine("The goblin has droped a Super Potion and an Iron Sword");
+
+                                gameMap.CurrentRoom.Items.Add(new Potion("Super Potion", 50));
+                                gameMap.CurrentRoom.Items.Add(new Weapon("Iron Sword", 75));
+
+                            }
+
+                            gameMap.CurrentRoom.Monsters.Remove(currentMonster);
+                            inCombat = false; // Exit combat loop
+                        }
+
+                        else
+                        {
+                            currentMonster.Attack(player);
+                            CheckPlayerHealth();
+                        }
+                        break;
+                
+
                     case "2":
-                        Console.WriteLine("There is nothing in this mysterious box");
+                        
+                        player.ViewInventory();
+
+                        Console.WriteLine("Enter the name of the item to use:");
+
+                        string itemName = Console.ReadLine();
+
+                        if (player.HasItem(itemName))
+                        {
+                            player.UseItem(itemName);
+                        }
+                        else
+                        {
+                            Console.WriteLine("You don't have that item.");
+                        }
+
+                        currentMonster.Attack(player);
+                        CheckPlayerHealth();
+
                         break;
 
-                    // Case 3: Go to the second room
+
                     case "3":
-                        Console.WriteLine("You have entered a large room where a monster has woken up" +
-                            "\nYou have no choice but to fight the monster");
-
-                        if (player.HasItem("sword"))
-                        {
-                            Console.WriteLine("\nYou have begun the battle with the monster...");
-                            Console.WriteLine("\nCongratulations!!! You have beaten the monster and won the game.\n");
-                            playing = false;
-
-                        }
-                        else
-                        {
-                            Console.WriteLine("\nYou have begun the battle with the monster...");
-                            Console.WriteLine("\nYou were defenceless and were killed in battle.\n");
-                            playing = false;
-
-                        }
-                        break;
-
-                    // Case 4: View inventory
-
-                    case "4":
-                        if (player.InventoryContents() == "")
-                        {
-                            Console.WriteLine("\nYour inventory is empty." +
-                                "\nOpen the mysterious box or the chest to collect an item.");
-                        }
-                        else
-                            Console.WriteLine("\nYour inventory contains: " + player.InventoryContents());
+                        Console.WriteLine("You fled the battle!");
+                        inCombat = false; 
 
                         break;
 
-                    // Case 5: View room description
-
-                    case "5":
-                        Console.WriteLine("\nHere is the room description: ");
-                        Console.WriteLine(currentRoom.GetDescription());
-                        break;
-
-                    // Case 6: Quit game
-
-                    case "6":
-                        Console.WriteLine("\nSee you next time - Goodbye");
-                        playing = false;
-                        break;
-
-                    // Default case: If the user enters a number that is not one of the options or a random string
                     default:
-                        Console.WriteLine("\nPlease enter a number for one of the options");
+                        Console.WriteLine("Invalid choice. Please select a valid option.");
                         break;
-
                 }
             }
         }
+
+        
+        
+        private void DisplayRoomOptions()
+
+        {
+            Console.WriteLine(gameMap.CurrentRoom.Description);
+            Console.WriteLine("\nSelect a number" +
+                "\n1. Search room" +
+                "\n2. Move to the next room" +
+                "\n3. Inventory" +
+                "\n4. Quit\n");
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+
+                case "1":
+                    Console.WriteLine("\nYou found the following items:\n");
+                    foreach (var item in gameMap.CurrentRoom.Items)
+                    {
+                        Console.WriteLine($"- {item.Name}");
+                        item.Collect(player);
+                    }
+                    gameMap.CurrentRoom.Items.Clear();
+                    break;
+
+                case "2":
+
+                    int currentIndex = gameMap.Rooms.IndexOf(gameMap.CurrentRoom);
+                    if (currentIndex == gameMap.Rooms.Count - 1)
+                    {
+                        Console.WriteLine("You win!");
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        gameMap.CurrentRoom = gameMap.Rooms[currentIndex + 1];
+                        Console.WriteLine($"You moved to the next room: {gameMap.CurrentRoom.Description}");
+                    }
+                    break;
+
+                case "3":
+
+                    player.ViewInventory();
+                    break;
+
+                case "4":
+                    Console.WriteLine("Thanks for playing! Goodbye");
+                    Environment.Exit(0);
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid choice. Please select a valid option.");
+                    break;
+            }
+        }
+
+
+        private void CheckPlayerHealth()
+        {
+            if (player.Health <= 0)
+            {
+                Console.WriteLine("Game Over!");
+                Environment.Exit(0);
+            }
+        }
+
     }
+    
 }

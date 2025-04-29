@@ -25,7 +25,7 @@ namespace DungeonExplorer
         {
             Health -= damage;
             if (Health < 0) Health = 0;
-            Console.WriteLine($"You took {damage} damage.Your health is now {Health} hp");
+            Console.WriteLine($"{Name} took {damage} damage. Health: {Health} hp");
         }
     }
 
