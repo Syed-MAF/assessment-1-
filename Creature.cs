@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    class Creature : IDamageable
+    public abstract class Creature : IDamageable
     {
         public string Name { get; protected set; }
+
         public int Health { get; protected set; }
+
 
         protected Creature(string name, int health)
         {
@@ -21,9 +23,9 @@ namespace DungeonExplorer
 
         public void TakeDamage(int damage)
         {
-            ;
-            Health = Math.Max(0, Health - damage);
-            Console.WriteLine($"{Name} took {damage} damage. Remaining health: {Health}");
+            Health -= damage;
+            if (Health < 0) Health = 0;
+            Console.WriteLine($"You took {damage} damage.Your health is now {Health} hp");
         }
     }
 
@@ -32,4 +34,3 @@ namespace DungeonExplorer
         void TakeDamage(int damage);
     }
 }
-

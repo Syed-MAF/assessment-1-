@@ -1,43 +1,78 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
 namespace DungeonExplorer
 {
     public class Player : Creature
     {
-        // Create a player class with the following properties:
-        public string Name { get; private set; }
-        public int Health { get; private set; }
-        private List<string> inventory = new List<string>();
+        private Inventory inventory = new Inventory();
 
-
-        public Player(string name, int health) 
+        public Player(string name, int health): base(name, health)
         {
-            this.Name = name;
-            Name = name;
-            Health = health;
-            // Initialize the player with a name and health
-        }
-        public void PickUpItem(string item)
-        {
-            // Add the item to the player's inventory
-            inventory.Add(item);
-            Console.WriteLine("You have added an iteam to you inventory\n");
-            // Print a message to the console that the player has picked up the item
-
-        }
-        public string InventoryContents()
-        {
-            // Return a string with all the items in the player's inventory
-            return string.Join(", ", inventory);
+            // This gives the player a name and health
         }
 
-        public bool HasItem(string item)
+        public void PickUpItem(Item item)
         {
-            // Return true if the player has the item in their inventory
-            return inventory.Contains(item);
-            // Return false if the player does not have the item in their inventory
+            inventory.AddItem(item);
+            Console.WriteLine("You've added an item to your inventory\n");
+            Console.WriteLine($"You have picked up {item.Name}.");
+            Console.WriteLine("Your one step closer to beating the monsters!");
+        }
+
+        public bool HasItem(string itemName)
+        {
+            return inventory.Items.Any(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+        }
+
+
+        public void UseItem(string itemName)
+        {
+            Item item = inventory.FindItem(itemName);
+            if (item != null )
+            {
+                item.Use(this);
+                inventory.RemoveItem(item);
+            }
+            else 
+            {
+                Console.WriteLine("This iteam has not been found in you inventory.");
+            }
+            
+        }
+
+        public void ViewInventory()
+        {
+            Console.WriteLine("Inventory:");
+
+            if (inventory.Items.Count == 0)
+            {
+                Console.WriteLine("Your inventory is empty.Go pick up an item.");
+                return;
+            }
+            foreach (var item in inventory.Items)
+
+                Console.WriteLine($"- {item.Name}");
+        }
+
+        public override void Attack(Creature target)
+        {
+            Weapon weapon = inventory.GetWeapons().FirstOrDefault();
+            if (weapon != null)
+            {
+                Console.WriteLine($"You attacked  with {weapon.Name}!" );
+
+                target.TakeDamage(weapon.AttackPower);
+            }
+            else Console.WriteLine("You have no weapon!");
+        }
+
+        public void Heal(int amount)
+        {
+            Health += amount;
+            Console.WriteLine($"You healed {amount} HP!");
         }
     }
 }

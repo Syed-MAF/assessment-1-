@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    class GameMap
+    public class GameMap
     {
+        public Room CurrentRoom { get; set; }
 
+        public List<Room> Rooms { get; } = new List<Room>();
+
+        public GameMap(Room startRoom)
+        {
+            CurrentRoom = startRoom;
+            Rooms.Add(startRoom);
+        }
     }
 }

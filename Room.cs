@@ -1,21 +1,50 @@
-﻿namespace DungeonExplorer
+﻿using System.Collections.Generic;
+
+namespace DungeonExplorer
 {
     public class Room
     {
-        private string description;
+        public string Description { get; }
+
+        public List<Monster> Monsters { get; } = new List<Monster>();
+
+        public List<Item> Items { get; } = new List<Item>();
 
         public Room(string description)
-
-        // Create a room class with the following properties:
-        {
-            this.description = description;
+        
+        { 
+            Description = description;
         }
 
-        public string GetDescription()
-
-        // Create a method that returns the description of the room
+        public void AddMonster(Monster monster)
+        
         {
-            return description;
+            Monsters.Add(monster);
         }
+
+        public void AddItem(Item item)
+
+        {
+            Items.Add(item);
+        }
+        
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

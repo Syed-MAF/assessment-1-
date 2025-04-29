@@ -4,26 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace DungeonExplorer
 {
 
-    public interface ICollectable 
+    public interface ICollectable
     {
         void Collect(Player player);
     }
 
-    public abstract class Item : ICollectable
+    public class Item : ICollectable
     {
         public string Name { get; protected set; }
-
         public abstract void Use(Player player);
+
         public void Collect(Player player)
+        
         {
             player.PickUpItem(this);
-        }
+        } 
     }
-
-    public class Weapon:Item
+    
+    public class Weapon : Item
     {
         public int AttackPower { get; }
         public Weapon(string name, int attackPower)
@@ -32,26 +34,27 @@ namespace DungeonExplorer
             AttackPower = attackPower;
         }
 
-        public override void Use (Player player)
+        public override void Use(Player player)
         {
-            Console.WriteLine($"{Name} equiped a weapon with attack:{AttackPower}");
+            Console.WriteLine($"Equipped {Name}");
+            Console.WriteLine($"Attack: {AttackPower}");
         }
+            
     }
 
-    public class Potion: Item
+    public class Potion : Item
     {
         public int HealAmount { get; }
-
         public Potion(string name, int healAmount)
         {
             Name = name;
             HealAmount = healAmount;
         }
 
-        public override void Use(Player player)
-        {
+        public override void Use(Player player) 
+        { 
             player.Heal(HealAmount);
-            Console.WriteLine($"You used {Name} and gained {HealAmount} health.");
-        }
+            Console.WriteLine($"{Name} used! Healed {HealAmount} HP.");
+        } 
     }
 }

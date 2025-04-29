@@ -8,42 +8,50 @@ namespace DungeonExplorer
     {
         private Player player;
         private Room currentRoom;
-
+        private GameMap gameMap;
+        private Monster currentMonster;
+        
 
         public Game()
         {
-            // Initialize the game with two rooms and one player
 
             // gets the user to input their name
             Console.WriteLine("Enter your name to get started: ");
+            string name = Console.ReadLine();
 
-            // checks if the user has entered a name
-            while (true)
+            // checks if the user has entered a valid name that isn't empty
+            while (string.IsNullOrWhiteSpace(name))
             {
-                string playerName = Console.ReadLine();
-                if (playerName.Length > 0)
-                {
-                    break;
-                }
+
                 Console.WriteLine("Please enter a valid name");
+                Console.WriteLine("Enter a valid name: ");
+                name = Console.ReadLine();
+                
             }
 
+            Console.WriteLine("\nYou are in the dungeon now. " +
+                "\nThere are items scattered around that will help you win the game by defeating the monsters." +
+                "\nGood luck!!!");
             Console.WriteLine("\nPress any key to start the game...");
 
 
             // creates a new player object with the name the user has entered
-            player = new Player(Console.ReadLine(), 100);
+            player = new Player(name, 100);
 
             // creates a new room object with the description of the room
-            currentRoom = new Room("\nYou have entered the dungeon" +
-                "\nIn the dungeon there is no light and all you have brought with you is a torch" +
-                "\nYou must remain quite whilst in the first room or else the monster will wake up" +
-                "\nIf you listen closly you can even hear the monsters sleeping but once you enter the second room the monster will wake up" +
-                "\nThis dungeon is made up of two rooms, the first room contains two items" +
-                "\nThe second room has a monster inside" +
-                "\nTo win the game you must defeat the monster"+
-                "\nThere are a few items scattered around this desolated, cold and dark room\n");
-            Console.WriteLine(currentRoom.GetDescription());
+            Room startRoom1 = new Room("\nStarting room: You can see a wooden sword and a health potion.\n");
+
+            startRoom1.AddItem(new Weapon("Wooden Sword", 10));
+            startRoom1.AddItem(new Potion("Health Potion", 30));
+
+
+            Room goblinRoom = new Room("\nGoblins lair: You can see a goblin blocking your path!.\n");
+
+            goblinRoom.AddMonster(new Goblin());
+
+
+
+
 
         }
 
