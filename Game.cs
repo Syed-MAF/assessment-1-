@@ -182,7 +182,8 @@ namespace DungeonExplorer
                 "\n1. Search room" +
                 "\n2. Move to the next room" +
                 "\n3. Inventory" +
-                "\n4. Quit\n");
+                "\n4. Use an item" +
+                "\n5. Quit\n");
             string choice = Console.ReadLine();
 
             switch (choice)
@@ -219,6 +220,20 @@ namespace DungeonExplorer
                     break;
 
                 case "4":
+                    player.ViewInventory();
+                    Console.WriteLine("Enter the name of the item to use or press enter:");
+                    string itemName = Console.ReadLine();
+                    if (player.HasItem(itemName))
+                    {
+                        player.UseItem(itemName);
+                    }
+                    else
+                    {
+                        Console.WriteLine("You don't have that item.");
+                    }
+                    break;
+
+                case "5":
                     Console.WriteLine("Thanks for playing! Goodbye");
                     Environment.Exit(0);
                     break;
