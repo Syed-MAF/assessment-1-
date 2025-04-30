@@ -21,6 +21,7 @@ namespace DungeonExplorer
 
         public abstract void Attack(Creature target);
 
+        // / This method allows the creature to take damage
         public void TakeDamage(int damage)
         {
             Health -= damage;

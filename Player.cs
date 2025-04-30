@@ -16,6 +16,7 @@ namespace DungeonExplorer
             // This gives the player a name and health
         }
 
+        // / This method allows the player to pick up an item and add it to their inventory
         public void PickUpItem(Item item)
         {
             inventory.AddItem(item);
@@ -43,7 +44,7 @@ namespace DungeonExplorer
             return inventory.Items.Any(i => i.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
         }
 
-
+        // / This method allows the player to use an item from their inventory and removes it if you used the potion
         public void UseItem(string itemName)
         {
             Item item = inventory.FindItem(itemName);

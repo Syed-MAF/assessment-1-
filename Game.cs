@@ -8,12 +8,21 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace DungeonExplorer
 {
+
+    /* This is the main class that runs the game
+     * In this class the user can choose the options to be able to play the game 
+     * When the user chooses an option the game runs the mothods from different classes to run the game
+     */
+
+
+
     internal class Game
     {
         private Player player;
         private GameMap gameMap;
         private Monster currentMonster;
 
+        // This is the constructor for the game class
         public Game()
         {
 
@@ -60,14 +69,16 @@ namespace DungeonExplorer
 
             dragonRoom.AddMonster(new Dragon());
 
+            // creates a new game map object with the starting room
             gameMap = new GameMap(startRoom1);
 
+            // adds the rooms to the game map
             gameMap.Rooms.Add(goblinRoom);
             gameMap.Rooms.Add(dragonRoom);
 
         }
 
-
+        // This is the main method that runs the game
         public void Start() 
         {
             try
@@ -87,6 +98,8 @@ namespace DungeonExplorer
         }
 
 
+        // This method displays the options for the user to choose from
+        // The reason this is a method is to make it look less cluttererd because of the try-catch
         private void DisplayRoomOptions() 
         {
 
@@ -94,6 +107,7 @@ namespace DungeonExplorer
 
             var options = new List<string>();
 
+            // This hides the option to fight the monster if there arn't any monster in the room
             if (gameMap.CurrentRoom.Monsters.Any())
             {
                 options.Add("\n1. Fight monster");
@@ -130,7 +144,8 @@ namespace DungeonExplorer
 
                 case "2":
 
-                    try 
+                    // Lets the user to search the room for items
+                    try
                     {
                         Console.WriteLine("\nYou found the following items:\n");
                         foreach (var item in gameMap.CurrentRoom.Items)
@@ -154,6 +169,7 @@ namespace DungeonExplorer
 
                     try 
                     {
+                        // This stops the user from just moving on without fighting the monster
                         if (gameMap.CurrentRoom.Monsters.Any())
                         {
                             Console.WriteLine("You can't move to the next room while there are monsters present!");
@@ -162,6 +178,8 @@ namespace DungeonExplorer
 
                         else 
                         {
+                            // Lets the user to move to the next room
+                            // The game finishes if the user is in the last room
                             int currentIndex = gameMap.Rooms.IndexOf(gameMap.CurrentRoom);
                             if (currentIndex == gameMap.Rooms.Count - 1)
                             {
@@ -191,6 +209,7 @@ namespace DungeonExplorer
 
                     try 
                     {
+                        // This lets the user to view their inventory
                         player.ViewInventory();
                     }
 
@@ -205,7 +224,8 @@ namespace DungeonExplorer
                 case "5":
 
                     try 
-                    { 
+                    {
+                        // This lets the user to use an item from the inventory by typing the name of it
                         player.ViewInventory();
                         Console.WriteLine("\nEnter the name of the item to use or type 'cancel':");
                         string itemName = Console.ReadLine();
@@ -226,6 +246,7 @@ namespace DungeonExplorer
 
                     try 
                     {
+                        // Lets the player just leave if they want to quit playing
                         Console.WriteLine("Thanks for playing! Goodbye");
                         Environment.Exit(0);
                     }
@@ -239,6 +260,7 @@ namespace DungeonExplorer
 
                 default:
 
+                    // Makes sure the user selects a valid option and stops the game crashing
                     Console.WriteLine("Invalid choice. Please select a valid option.");
                     break;
             }
@@ -246,6 +268,8 @@ namespace DungeonExplorer
             
             
         }
+
+        // This method starts the combat with the monster
         private void StartCombat()
         {
             bool inCombat = true;
@@ -264,6 +288,7 @@ namespace DungeonExplorer
 
                 switch (choice)
                 {
+                    // This allows the player to attack
                     case "1":
 
                         player.Attack(currentMonster);
@@ -273,6 +298,7 @@ namespace DungeonExplorer
                             Console.WriteLine($"You have defeated {currentMonster.Name}");
 
                             if (currentMonster is Goblin)
+                                // This gives extra items as a reward for beating the goblin
 
                             {
                                 Console.WriteLine("The goblin has droped a Super Potion and an Iron Sword");
@@ -282,8 +308,18 @@ namespace DungeonExplorer
 
                             }
 
+                            else if (currentMonster is Dragon)
+                            {
+                                // This exds the game after beating the dragon so that it doesnt just go back to the options
+                                Console.WriteLine("\nCONGRATULATION !!! You have won by defeating the game boss !!!");
+                                Environment.Exit(0);
+
+                            }
+
                             gameMap.CurrentRoom.Monsters.Remove(currentMonster);
-                            inCombat = false; // Exit combat loop
+                            // This removes the monster after it dies
+
+                            inCombat = false; 
                         }
 
                         else
@@ -295,7 +331,8 @@ namespace DungeonExplorer
                 
 
                     case "2":
-                        
+
+                        // This allows the player to use an item from the inventory
                         player.ViewInventory();
 
                         Console.WriteLine("Enter the name of the item to use:");
@@ -318,6 +355,8 @@ namespace DungeonExplorer
 
 
                     case "3":
+
+                        // Bascially just lets the player to run away from the monster and go back to options so that you can heal
                         Console.WriteLine("You fled the battle!");
                         inCombat = false; 
 
@@ -330,10 +369,12 @@ namespace DungeonExplorer
             }
         }
         private void CheckPlayerHealth()
+
+        // This method just makes sure the player is still alive
         {
             if (player.Health <= 0)
             {
-                Console.WriteLine("Game Over!");
+                Console.WriteLine("\nGame Over! Good luck next time. ");
                 Environment.Exit(0);
             }
         }        

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-
+    /// This is the base class for all items in the game
     public interface ICollectable
     {
         void Collect(Player player);
@@ -25,7 +25,8 @@ namespace DungeonExplorer
             player.PickUpItem(this);
         } 
     }
-    
+
+    /// This is the base class for all weapons in the game
     public class Weapon : Item
     {
         public int AttackPower { get; }
@@ -43,6 +44,7 @@ namespace DungeonExplorer
             
     }
 
+    /// This is the base class for all potions in the game
     public class Potion : Item
     {
         public int HealAmount { get; }

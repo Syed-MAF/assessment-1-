@@ -14,8 +14,9 @@ namespace DungeonExplorer
         protected Monster(string name, int health, int attackPower) : base(name, health)
         {
             AttackPower = attackPower;
-        }   
+        }
 
+        // / This method allows the monster to attack the player
         public override void Attack(Creature target)
         {
             Console.WriteLine($"{Name} attacks did {AttackPower} damage!");
@@ -30,6 +31,6 @@ namespace DungeonExplorer
 
     public class Dragon : Monster
     {
-        public Dragon() : base("Dragon", 150, 30) { }
+        public Dragon() : base("Dragon", 150, 45) { }
     }
 }
