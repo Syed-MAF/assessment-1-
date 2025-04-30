@@ -118,18 +118,29 @@ namespace DungeonExplorer
                     break;
 
                 case "3":
-                    int currentIndex = gameMap.Rooms.IndexOf(gameMap.CurrentRoom);
-                    if (currentIndex == gameMap.Rooms.Count - 1)
+
+                    if (gameMap.CurrentRoom.Monsters.Any())
                     {
-                        Console.WriteLine("\n Congratulations! You won!");
-                        Environment.Exit(0);
+                        Console.WriteLine("You can't move to the next room while there are monsters present!");
+                        break;
                     }
-                    else
+
+                    else 
                     {
-                        gameMap.CurrentRoom = gameMap.Rooms[currentIndex + 1];
-                        Console.WriteLine($"You moved to the next room: {gameMap.CurrentRoom.Description}");
-                    }
-                    break;
+                        int currentIndex = gameMap.Rooms.IndexOf(gameMap.CurrentRoom);
+                        if (currentIndex == gameMap.Rooms.Count - 1)
+                        {
+                            Console.WriteLine("\n Congratulations! You won!");
+                            Environment.Exit(0);
+                        }
+                        else
+                        {
+                            gameMap.CurrentRoom = gameMap.Rooms[currentIndex + 1];
+                            Console.WriteLine($"You moved to the next room: {gameMap.CurrentRoom.Description}");
+                        }
+                       
+                    }break;
+
 
                 case "4":
 
