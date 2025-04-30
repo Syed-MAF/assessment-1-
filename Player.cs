@@ -8,6 +8,8 @@ namespace DungeonExplorer
     public class Player : Creature
     {
         private Inventory inventory = new Inventory();
+        public Weapon EquippedWeapon { get; private set; }
+
 
         public Player(string name, int health): base(name, health)
         {
@@ -18,6 +20,22 @@ namespace DungeonExplorer
         {
             inventory.AddItem(item);
             Console.WriteLine($"You have picked up {item.Name}.");
+
+            if (item is Weapon newWeapon)
+            {
+                if (EquippedWeapon == null)
+                {
+                    EquippedWeapon = newWeapon;
+                    Console.WriteLine($"Attack: {newWeapon.AttackPower}");
+                }
+                else if (newWeapon.AttackPower > EquippedWeapon.AttackPower)
+                {
+
+                    EquippedWeapon = newWeapon;
+                    Console.WriteLine($"Upgraded from {EquippedWeapon.Name} to {newWeapon.Name}!");
+                }
+            }
+
         }
 
         public bool HasItem(string itemName)
@@ -32,7 +50,10 @@ namespace DungeonExplorer
             if (item != null )
             {
                 item.Use(this);
-                inventory.RemoveItem(item);
+                if (item is Potion)
+                {
+                    inventory.RemoveItem(item);
+                }
             }
             else 
             {
@@ -58,11 +79,12 @@ namespace DungeonExplorer
         public override void Attack(Creature target)
         {
             Weapon weapon = inventory.GetWeapons().FirstOrDefault();
+
             if (weapon != null)
             {
-                Console.WriteLine($"{Name} attacked  with {weapon.Name}!" );
+                Console.WriteLine($"{Name} attacked  with {EquippedWeapon.Name}!" );
 
-                target.TakeDamage(weapon.AttackPower);
+                target.TakeDamage(EquippedWeapon.AttackPower);
             }
             else Console.WriteLine("You have no weapon!");
         }

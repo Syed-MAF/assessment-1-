@@ -36,8 +36,9 @@ namespace DungeonExplorer
 
             }
 
-            Console.WriteLine("\nYou are in the dungeon now. " +
+            Console.WriteLine("\nYou are in the dark and glomy dungeon now. " +
                 "\nThere are items scattered around that will help you win the game by defeating the monsters." +
+                "You must leave the dungeon by defeating the monster to win." +
                 "\nGood luck!!!");
 
             Console.WriteLine("\nStarting room: There is a wooden sword and a health potion.\n");
@@ -46,13 +47,13 @@ namespace DungeonExplorer
             player = new Player(name, 100);
 
             // creates a new room object with the description of the room
-            Room startRoom1 = new Room("You are in the starting room.");
+            Room startRoom1 = new Room("You are at the enterence to the mysterious dungeon.");
 
             startRoom1.AddItem(new Weapon("Wooden Sword", 20));
             startRoom1.AddItem(new Potion("Health Potion", 30));
 
 
-            Room goblinRoom = new Room("\n You are in the goblins lair!.\n");
+            Room goblinRoom = new Room("\nYou are in the goblins lair! This is a cold and dark room filled with danger.\n");
 
             goblinRoom.AddMonster(new Goblin());
 
@@ -136,7 +137,7 @@ namespace DungeonExplorer
                         else
                         {
                             gameMap.CurrentRoom = gameMap.Rooms[currentIndex + 1];
-                            Console.WriteLine($"You moved to the next room: {gameMap.CurrentRoom.Description}");
+                            Console.WriteLine($"You moved to the next room: ");
                         }
                        
                     }break;
@@ -204,7 +205,7 @@ namespace DungeonExplorer
                                 Console.WriteLine("The goblin has droped a Super Potion and an Iron Sword");
 
                                 gameMap.CurrentRoom.Items.Add(new Potion("Super Potion", 50));
-                                gameMap.CurrentRoom.Items.Add(new Weapon("Iron Sword", 75));
+                                gameMap.CurrentRoom.Items.Add(new Weapon("Iron Sword", 70));
 
                             }
 
