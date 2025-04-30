@@ -7,7 +7,7 @@ namespace DungeonExplorer
 {
     public class Player : Creature
     {
-        private Inventory inventory = new Inventory();
+        internal Inventory inventory = new Inventory();
         public Weapon EquippedWeapon { get; private set; }
 
 
