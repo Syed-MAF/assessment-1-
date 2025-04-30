@@ -11,7 +11,8 @@ namespace DungeonExplorer
         static void Main(string[] args)
         {
 
-            GameTests.RunAllTests();
+            // GameTests.RunAllTests();
+            // This line is used to run the testing class
             
             Game game = new Game();
             game.Start();

@@ -16,6 +16,7 @@ namespace DungeonExplorer
     public class Item : ICollectable
     {
         public string Name { get; protected set; }
+
         public abstract void Use(Player player);
 
         public void Collect(Player player)

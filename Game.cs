@@ -70,9 +70,19 @@ namespace DungeonExplorer
 
         public void Start() 
         {
-            while (true)
+            try
             {
-                DisplayRoomOptions();
+
+                while (true)
+                {
+                    DisplayRoomOptions();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred and the game crashed: {ex.Message}");
+                Console.WriteLine("Please restart the game.");
             }
         }
 
@@ -104,67 +114,131 @@ namespace DungeonExplorer
             switch (choice)
             {
                 case "1" when gameMap.CurrentRoom.Monsters.Any():
-                    StartCombat();
+                    
+                    try 
+                    {
+                        StartCombat();
+                    }
+                    
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An error occurred during combat: {ex.Message}");
+                        Console.WriteLine("Please restart the game.");
+                    }
+
                     break;
 
                 case "2":
-                    Console.WriteLine("\nYou found the following items:\n");
-                    foreach (var item in gameMap.CurrentRoom.Items)
+
+                    try 
                     {
-                        Console.WriteLine($"- {item.Name}");
-                        item.Collect(player);
+                        Console.WriteLine("\nYou found the following items:\n");
+                        foreach (var item in gameMap.CurrentRoom.Items)
+                        {
+                            Console.WriteLine($"- {item.Name}");
+                            item.Collect(player);
+                        }
+                        gameMap.CurrentRoom.Items.Clear();
+                         
                     }
-                    gameMap.CurrentRoom.Items.Clear();
+
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An error occurred whilst searching the room: {ex.Message}");
+                        Console.WriteLine("Please restart the game.");
+                    }
                     break;
+
 
                 case "3":
 
-                    if (gameMap.CurrentRoom.Monsters.Any())
+                    try 
                     {
-                        Console.WriteLine("You can't move to the next room while there are monsters present!");
-                        break;
+                        if (gameMap.CurrentRoom.Monsters.Any())
+                        {
+                            Console.WriteLine("You can't move to the next room while there are monsters present!");
+                            break;
+                        }
+
+                        else 
+                        {
+                            int currentIndex = gameMap.Rooms.IndexOf(gameMap.CurrentRoom);
+                            if (currentIndex == gameMap.Rooms.Count - 1)
+                            {
+                                Console.WriteLine("\n Congratulations! You won!");
+                                Environment.Exit(0);
+                            }
+                            else
+                            {
+                                gameMap.CurrentRoom = gameMap.Rooms[currentIndex + 1];
+                                Console.WriteLine($"You moved to the next room: ");
+                            }
+                       
+                        }
                     }
 
-                    else 
+                    catch (Exception ex)
                     {
-                        int currentIndex = gameMap.Rooms.IndexOf(gameMap.CurrentRoom);
-                        if (currentIndex == gameMap.Rooms.Count - 1)
-                        {
-                            Console.WriteLine("\n Congratulations! You won!");
-                            Environment.Exit(0);
-                        }
-                        else
-                        {
-                            gameMap.CurrentRoom = gameMap.Rooms[currentIndex + 1];
-                            Console.WriteLine($"You moved to the next room: ");
-                        }
-                       
-                    }break;
+                        Console.WriteLine($"An error occurred while moving to the next room: {ex.Message}");
+                        Console.WriteLine("Please restart the game.");
+                    }
+                    break;
+
+
 
 
                 case "4":
 
-                    player.ViewInventory();
+                    try 
+                    {
+                        player.ViewInventory();
+                    }
+
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An error occurred while viewing the inventory: {ex.Message}");
+                        Console.WriteLine("Please restart the game.");
+                    }
                     break;
 
 
                 case "5":
 
-                    player.ViewInventory();
-                    Console.WriteLine("\nEnter the name of the item to use or type 'cancel':");
-                    string itemName = Console.ReadLine();
-                    if (itemName.ToLower() != "cancel")
+                    try 
+                    { 
+                        player.ViewInventory();
+                        Console.WriteLine("\nEnter the name of the item to use or type 'cancel':");
+                        string itemName = Console.ReadLine();
+                        if (itemName.ToLower() != "cancel")
+                        {
+                            player.UseItem(itemName);
+                        }
+                    }
+
+                    catch (Exception ex)
                     {
-                        player.UseItem(itemName);
+                        Console.WriteLine($"An error occurred while using an item: {ex.Message}");
+                        Console.WriteLine("Please restart the game.");
                     }
                     break;
 
                 case "6":
-                    Console.WriteLine("Thanks for playing! Goodbye");
-                    Environment.Exit(0);
+
+                    try 
+                    {
+                        Console.WriteLine("Thanks for playing! Goodbye");
+                        Environment.Exit(0);
+                    }
+
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"An error occurred while quitting the game: {ex.Message}");
+                        Console.WriteLine("Please restart the game.");
+                    }
                     break;
 
                 default:
+
                     Console.WriteLine("Invalid choice. Please select a valid option.");
                     break;
             }
