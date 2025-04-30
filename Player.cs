@@ -63,6 +63,7 @@ namespace DungeonExplorer
             
         }
 
+        // / This method allows the player to view their inventory and see what items they have
         public void ViewInventory()
         {
             Console.WriteLine("Inventory:");
@@ -77,6 +78,7 @@ namespace DungeonExplorer
                 Console.WriteLine($"- {item.Name}");
         }
 
+        // / This method allows the player to attack the monster using their equipped weapon
         public override void Attack(Creature target)
         {
             Weapon weapon = inventory.GetWeapons().FirstOrDefault();
@@ -90,6 +92,7 @@ namespace DungeonExplorer
             else Console.WriteLine("You have no weapon!");
         }
 
+        //  This method allows the player to heal themselves using the potions
         public void Heal(int amount)
         {
             Health += amount;

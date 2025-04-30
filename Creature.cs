@@ -12,7 +12,7 @@ namespace DungeonExplorer
 
         public int Health { get; protected set; }
 
-
+        /// This is the base class for all creatures in the game
         protected Creature(string name, int health)
         {
             Name = name;
