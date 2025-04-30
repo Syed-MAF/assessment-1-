@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Media;
@@ -47,7 +48,7 @@ namespace DungeonExplorer
             // creates a new room object with the description of the room
             Room startRoom1 = new Room("You are in the starting room.");
 
-            startRoom1.AddItem(new Weapon("Wooden Sword", 30));
+            startRoom1.AddItem(new Weapon("Wooden Sword", 20));
             startRoom1.AddItem(new Potion("Health Potion", 30));
 
 
@@ -67,27 +68,99 @@ namespace DungeonExplorer
         }
 
 
-
-        public void Start()
+        public void Start() 
         {
-
-            // The game loop
             while (true)
-
             {
-                bool _hasFled = false;
-                if (gameMap.CurrentRoom.Monsters.Any() && !_hasFled)
-                {
-                    StartCombat();
-                }
-                else
-                {
-                    DisplayRoomOptions();
-                }
+                DisplayRoomOptions();
             }
-
         }
 
+
+        private void DisplayRoomOptions() 
+        {
+
+            Console.WriteLine(gameMap.CurrentRoom.Description);
+
+            var options = new List<string>();
+
+            if (gameMap.CurrentRoom.Monsters.Any())
+            {
+                options.Add("\n1. Fight monster");
+            }
+
+            options.AddRange(new[]
+            {
+                "2. Search room",
+                "3. Move to the next room",
+                "4. Inventory",
+                "5. Use an item",
+                "6. Quit\n"
+            });
+
+            Console.WriteLine("\n" + string.Join("\n", options));
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1" when gameMap.CurrentRoom.Monsters.Any():
+                    StartCombat();
+                    break;
+
+                case "2":
+                    Console.WriteLine("\nYou found the following items:\n");
+                    foreach (var item in gameMap.CurrentRoom.Items)
+                    {
+                        Console.WriteLine($"- {item.Name}");
+                        item.Collect(player);
+                    }
+                    gameMap.CurrentRoom.Items.Clear();
+                    break;
+
+                case "3":
+                    int currentIndex = gameMap.Rooms.IndexOf(gameMap.CurrentRoom);
+                    if (currentIndex == gameMap.Rooms.Count - 1)
+                    {
+                        Console.WriteLine("\n Congratulations! You won!");
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        gameMap.CurrentRoom = gameMap.Rooms[currentIndex + 1];
+                        Console.WriteLine($"You moved to the next room: {gameMap.CurrentRoom.Description}");
+                    }
+                    break;
+
+                case "4":
+
+                    player.ViewInventory();
+                    break;
+
+
+                case "5":
+
+                    player.ViewInventory();
+                    Console.WriteLine("\nEnter the name of the item to use or type 'cancel':");
+                    string itemName = Console.ReadLine();
+                    if (itemName.ToLower() != "cancel")
+                    {
+                        player.UseItem(itemName);
+                    }
+                    break;
+
+                case "6":
+                    Console.WriteLine("Thanks for playing! Goodbye");
+                    Environment.Exit(0);
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid choice. Please select a valid option.");
+                    break;
+            }
+
+            
+            
+        }
         private void StartCombat()
         {
             bool inCombat = true;
@@ -161,7 +234,6 @@ namespace DungeonExplorer
 
                     case "3":
                         Console.WriteLine("You fled the battle!");
-                        _hasFled = true;
                         inCombat = false; 
 
                         break;
@@ -172,6 +244,39 @@ namespace DungeonExplorer
                 }
             }
         }
+        private void CheckPlayerHealth()
+        {
+            if (player.Health <= 0)
+            {
+                Console.WriteLine("Game Over!");
+                Environment.Exit(0);
+            }
+        }        
+        
+        
+        
+        /*
+        public void Start()
+        {
+
+            // The game loop
+            while (true)
+
+            {
+                bool _hasFled = false;
+                if (gameMap.CurrentRoom.Monsters.Any() && !_hasFled)
+                {
+                    StartCombat();
+                }
+                else
+                {
+                    DisplayRoomOptions();
+                }
+            }
+
+        }
+
+
 
         
         
@@ -243,14 +348,7 @@ namespace DungeonExplorer
         }
 
 
-        private void CheckPlayerHealth()
-        {
-            if (player.Health <= 0)
-            {
-                Console.WriteLine("Game Over!");
-                Environment.Exit(0);
-            }
-        }
+*/
 
     }
     
