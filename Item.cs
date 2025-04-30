@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DungeonExplorer
 {
-    /// This is the base class for all items in the game
+    /// This is the class for all items in the game
     public interface ICollectable
     {
         void Collect(Player player);
@@ -26,7 +26,7 @@ namespace DungeonExplorer
         } 
     }
 
-    /// This is the base class for all weapons in the game
+    /// This is the class for all weapons in the game
     public class Weapon : Item
     {
         public int AttackPower { get; }
@@ -38,13 +38,12 @@ namespace DungeonExplorer
 
         public override void Use(Player player)
         {
-            Console.WriteLine($"Equipped {Name}");
-            Console.WriteLine($"Attack: {AttackPower}");
+            Console.WriteLine($"{Name} equiped a weapon with attack:{AttackPower}"");
         }
             
     }
 
-    /// This is the base class for all potions in the game
+    /// This is the class for all potions in the game
     public class Potion : Item
     {
         public int HealAmount { get; }
@@ -57,7 +56,7 @@ namespace DungeonExplorer
         public override void Use(Player player) 
         { 
             player.Heal(HealAmount);
-            Console.WriteLine($"{Name} used! Healed {HealAmount} HP.");
+            Console.WriteLine($"You used {Name} and gained {HealAmount} health);
         } 
     }
 }

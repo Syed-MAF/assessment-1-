@@ -44,7 +44,7 @@ namespace DungeonExplorer
 
             }
 
-            Console.WriteLine("\nYou are in the dark and glomy dungeon now. " +
+            Console.WriteLine("\nYou are in the dark and gloomy dungeon now. " +
                 "\nThere are items scattered around that will help you win the game by defeating the monsters." +
                 "You must leave the dungeon by defeating the monster to win." +
                 "\nGood luck!!!");

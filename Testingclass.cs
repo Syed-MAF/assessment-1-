@@ -52,9 +52,9 @@ namespace DungeonExplorer
 
             player.Attack(goblin);
 
-            Debug.Assert(goblin.Health == goblinStartHealth - 25,
-                "Goblin should take 25 damage from the sword");
+            Debug.Assert(goblin.Health == goblinStartHealth - 25, "Goblin should take 25 damage from the sword");
 
+                
             Console.WriteLine("Combat damage test passed!");
         }
 
