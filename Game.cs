@@ -13,7 +13,6 @@ namespace DungeonExplorer
         private Player player;
         private GameMap gameMap;
         private Monster currentMonster;
-        private bool _hasFled;
 
         public Game()
         {
@@ -265,103 +264,6 @@ namespace DungeonExplorer
             }
         }        
         
-        
-        
-        /*
-        public void Start()
-        {
-
-            // The game loop
-            while (true)
-
-            {
-                bool _hasFled = false;
-                if (gameMap.CurrentRoom.Monsters.Any() && !_hasFled)
-                {
-                    StartCombat();
-                }
-                else
-                {
-                    DisplayRoomOptions();
-                }
-            }
-
-        }
-
-
-
-        
-        
-        private void DisplayRoomOptions()
-
-        {
-            Console.WriteLine(gameMap.CurrentRoom.Description);
-            Console.WriteLine("\nSelect a number" +
-                "\n1. Search room" +
-                "\n2. Move to the next room" +
-                "\n3. Inventory" +
-                "\n4. Use an item" +
-                "\n5. Quit\n");
-            string choice = Console.ReadLine();
-
-            switch (choice)
-            {
-
-                case "1":
-                    Console.WriteLine("\nYou found the following items:\n");
-                    foreach (var item in gameMap.CurrentRoom.Items)
-                    {
-                        Console.WriteLine($"- {item.Name}");
-                        item.Collect(player);
-                    }
-                    gameMap.CurrentRoom.Items.Clear();
-                    break;
-
-                case "2":
-
-                    int currentIndex = gameMap.Rooms.IndexOf(gameMap.CurrentRoom);
-                    if (currentIndex == gameMap.Rooms.Count - 1)
-                    {
-                        Console.WriteLine("\n Congratulations! You won!");
-                        Environment.Exit(0);
-                    }
-                    else
-                    {
-                        gameMap.CurrentRoom = gameMap.Rooms[currentIndex + 1];
-                        Console.WriteLine($"You moved to the next room: {gameMap.CurrentRoom.Description}");
-                    }
-                    break;
-
-                case "3":
-
-                    player.ViewInventory();
-                    break;
-
-                case "4":
-                    
-                    player.ViewInventory();
-                    Console.WriteLine("\nEnter the name of the item to use or type 'cancel':");
-                    string itemName = Console.ReadLine();
-                    if (itemName.ToLower() != "cancel")
-                    {
-                        player.UseItem(itemName);
-                    }
-                    break;
-
-                case "5":
-                    Console.WriteLine("Thanks for playing! Goodbye");
-                    Environment.Exit(0);
-                    break;
-
-                default:
-                    Console.WriteLine("Invalid choice. Please select a valid option.");
-                    break;
-            }
-        }
-
-
-*/
-
     }
     
 }
